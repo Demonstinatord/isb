@@ -103,7 +103,7 @@ def main():
     for char in freq:
         temp_text += (char + " : " + f"{freq[char]:.4f}" + '\n')
     print(temp_text)
-    file_writer(args.output_file, temp_text)
+    file_writer(args.output_file, changed_text)
     file_writer("text_frequency2.txt",temp_text)
 
 if __name__=="__main__":
