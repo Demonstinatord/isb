@@ -1,11 +1,12 @@
 import argparse
-import os
-import json
+
+
+
 def freq_calculate(input_text: str)->dict:
     char_count = {}
     total_chars=len(input_text)
     for char in input_text:
-        if indent_check(char):
+        if char!="\n":
             if char in char_count:
                 char_count[char] += 1
             else:
@@ -18,8 +19,7 @@ def freq_calculate(input_text: str)->dict:
     return sorted_freq
 
 
-def indent_check(symbol):
-    return symbol!="\n"
+
 
 
 def get_args() -> argparse.Namespace:
@@ -32,8 +32,6 @@ def get_args() -> argparse.Namespace:
                             type=str, help="Path to the encrypted text")
     parser.add_argument("-output", "--output_file",
                             type=str, help="Path to the decrypted text")
-    parser.add_argument("-reference", "--reference_frequency",
-                        type=str, help="Path to the JSON file with reference frequencies")
     parser.add_argument( "--keyword",
                         type=str, help="Keyword that will change the original text")
     parser.add_argument("--str_to_change",
@@ -42,32 +40,45 @@ def get_args() -> argparse.Namespace:
     return arguments
 
 
-def file_reader(input_f):
-    f = open(input_f, "r", encoding="utf-8")
-    text = f.read()
-    f.close()
-    return text
-def file_writer(output,output_text):
+def file_reader(input_f:str)->str:
+    """
+            This function read some information from the file.
+            :arguments: input_f(path to the file)
+            :return: text
+    """
+    try:
+        f = open(input_f, "r", encoding="utf-8")
+        text = f.read()
+        f.close()
+        return text
+    except: raise PermissionError("can't open file to read")
+
+def file_writer(output: str,output_text: str):
+    """
+        This function writes some information into the file.
+        :arguments: output(path to the file), output_text
+    """
     try:
         f = open(f'{output}', "w", encoding="utf-8")
-        if type(output)=='dict':
-            for char in output:
-                f.write(char, ":", output[char])
-
-        else:
-            f.write(output_text)
+        f.write(output_text)
         f.close()
 
     except: raise PermissionError("can't open file to write")
 
 
-def text_changer(original_text, str_to_change, keyword ):
 
+
+def text_changer(original_text, symbols_to_change, keyword ):
+    """
+            This function creates a text using symbols from ciphertext or symbols from keyword string.
+            :arguments: original text(original ciphertext), symbols_to_change(symbols needed to change), keyword(string of wildcards)
+            :return: ciphertext
+        """
 
     changed_text = ""
     for i in range(0, len(original_text)):
-        for j in range(len(str_to_change)):
-            if str_to_change[j]==original_text[i]:
+        for j in range(len(symbols_to_change)):
+            if symbols_to_change[j]==original_text[i]:
                 changed_text += keyword[j]
                 break
         else:
@@ -76,14 +87,6 @@ def text_changer(original_text, str_to_change, keyword ):
 
     return changed_text
 
-def delimiter_check(symbol):
-    delimiters=["\n"]
-    not_delimiter = True
-    for j in delimiters:
-        if (symbol == j):
-            not_delimiter = False
-
-    return not_delimiter
 
 
 def main():
@@ -96,8 +99,12 @@ def main():
     freq=freq_calculate(text)
 
     print(changed_text)
-
-    file_writer(args.output_file, changed_text)
+    temp_text=""
+    for char in freq:
+        temp_text += (char + " : " + f"{freq[char]:.4f}" + '\n')
+    print(temp_text)
+    file_writer(args.output_file, temp_text)
+    file_writer("text_frequency2.txt",temp_text)
 
 if __name__=="__main__":
     try:
