@@ -7,11 +7,11 @@ def get_args() -> argparse.Namespace:
     :return: Arguments
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("keyword",
+    parser.add_argument("--keyword",
                         type=str, help="Path to the keyword text that will change the original text")
-    parser.add_argument("input",
+    parser.add_argument("--input",
                             type=str, help="Path to the original text")
-    parser.add_argument("output",
+    parser.add_argument("--output",
                             type=str, help="Path to the decrypted text")
 
 
