@@ -1,5 +1,6 @@
 import argparse
-
+import json
+from const import *
 
 
 def freq_calculate(input_text: str)->dict:
@@ -66,15 +67,12 @@ def file_writer(output: str,output_text: str):
     except: raise PermissionError("can't open file to write")
 
 
-
-
-def text_changer(original_text, symbols_to_change, keyword ):
+def text_changer(original_text: str, symbols_to_change: str, keyword: str)->str:
     """
-            This function creates a text using symbols from ciphertext or symbols from keyword string.
-            :arguments: original text(original ciphertext), symbols_to_change(symbols needed to change), keyword(string of wildcards)
-            :return: ciphertext
-        """
-
+        This function creates a text using symbols from ciphertext or symbols from keyword string.
+        :arguments: original text(original ciphertext), symbols_to_change(symbols needed to change), keyword(string of wildcards)
+        :return: changed text
+    """
     changed_text = ""
     for i in range(0, len(original_text)):
         for j in range(len(symbols_to_change)):
@@ -83,17 +81,26 @@ def text_changer(original_text, symbols_to_change, keyword ):
                 break
         else:
             changed_text += original_text[i]
-
-
     return changed_text
 
 
+def keyword_writer(wildcards: str, symbols_to_change: str, file:str)->None:
+    """
+    That function creates json version of substitution key
+    :param wildcards:
+    :param symbols_to_change:
+    :param file:
+    :return:
+    """
+    keyword = {wildcards[i]: symbols_to_change[i] for i in range(len(wildcards))}
+    sorted_keyword = dict(sorted(keyword.items()))
+    with open(file, 'w', encoding='utf-8') as f:
+        json.dump(sorted_keyword, f, ensure_ascii=False)
 
 def main():
     args=get_args()
     input_f=args.input_file
     text=file_reader(input_f)
-    print(args.keyword[0])
     changed_text=text_changer(text,args.str_to_change,args.keyword)
     changed_text=changed_text.upper()
     freq=freq_calculate(text)
@@ -102,9 +109,9 @@ def main():
     temp_text=""
     for char in freq:
         temp_text += (char + " : " + f"{freq[char]:.4f}" + '\n')
-    print(temp_text)
     file_writer(args.output_file, changed_text)
-    file_writer("text_frequency2.txt",temp_text)
+    file_writer(Freq_analys,temp_text)
+    keyword_writer(args.keyword,args.str_to_change,Keyword,)
 
 if __name__=="__main__":
     try:
