@@ -13,8 +13,6 @@ def get_args() -> argparse.Namespace:
                             type=str, help="Path to the original text")
     parser.add_argument("--output",
                             type=str, help="Path to the decrypted text")
-
-
     arguments = parser.parse_args()
     return arguments
 
@@ -41,7 +39,6 @@ def file_writer(output: str,output_text: str):
         f = open(f'{output}', "w", encoding="utf-8")
         f.write(output_text)
         f.close()
-
     except: raise PermissionError("can't open file to write")
 
 
@@ -56,7 +53,6 @@ def delimiter_check(symbol: str)->bool:
     for j in delimiters:
         if (symbol == j):
             not_delimiter = False
-
     return not_delimiter
 
 
@@ -74,6 +70,7 @@ def text_encrypter(text: str, key: str)->str:
             changed_text += text[i]
     return(changed_text)
 
+
 def main():
     args=get_args()
     key = file_reader(args.keyword)
@@ -82,6 +79,7 @@ def main():
     changed_text=text_encrypter(text,key)
     print(changed_text)
     file_writer(args.output, changed_text)
+
 
 if __name__=="__main__":
     try:

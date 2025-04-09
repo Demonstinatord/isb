@@ -1,2 +1,2 @@
-Freq_analys = "text_frequency.txt"
-Keyword ="keyword.json"
+FREQ_ANALYSIS = "text_frequency.txt"
+KEYWORD ="keyword.json"

@@ -20,9 +20,6 @@ def freq_calculate(input_text: str)->dict:
     return sorted_freq
 
 
-
-
-
 def get_args() -> argparse.Namespace:
     """
     Reads arguments from terminal
@@ -54,7 +51,8 @@ def file_reader(input_f:str)->str:
         return text
     except: raise PermissionError("can't open file to read")
 
-def file_writer(output: str,output_text: str):
+
+def file_writer(output: str,output_text: str)->None:
     """
         This function writes some information into the file.
         :arguments: output(path to the file), output_text
@@ -97,21 +95,24 @@ def keyword_writer(wildcards: str, symbols_to_change: str, file:str)->None:
     with open(file, 'w', encoding='utf-8') as f:
         json.dump(sorted_keyword, f, ensure_ascii=False)
 
+
 def main():
     args=get_args()
     input_f=args.input_file
     text=file_reader(input_f)
+    if len(args.keyword)!=len(args.str_to_change):
+        raise ValueError("keyword and str_to_change doesn't have same length")
     changed_text=text_changer(text,args.str_to_change,args.keyword)
     changed_text=changed_text.upper()
     freq=freq_calculate(text)
-
     print(changed_text)
     temp_text=""
     for char in freq:
         temp_text += (char + " : " + f"{freq[char]:.4f}" + '\n')
     file_writer(args.output_file, changed_text)
-    file_writer(Freq_analys,temp_text)
-    keyword_writer(args.keyword,args.str_to_change,Keyword,)
+    file_writer(FREQ_ANALYSIS,temp_text)
+    keyword_writer(args.keyword,args.str_to_change,KEYWORD)
+
 
 if __name__=="__main__":
     try:
