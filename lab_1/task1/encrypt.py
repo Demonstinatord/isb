@@ -1,5 +1,5 @@
 import argparse
-
+from const import *
 
 def get_args() -> argparse.Namespace:
     """
@@ -42,13 +42,13 @@ def file_writer(output: str,output_text: str):
     except: raise PermissionError("can't open file to write")
 
 
-def delimiter_check(symbol: str)->bool:
+def delimiter_check(symbol: str, delimiters: list)->bool:
     """
         This function checks if the given character is a delimiter.
         :arguments: symbol
         :return: bool
     """
-    delimiters=[",",".",":",";"," ","\n","-","+"]
+
     not_delimiter = True
     for j in delimiters:
         if (symbol == j):
@@ -56,16 +56,28 @@ def delimiter_check(symbol: str)->bool:
     return not_delimiter
 
 
-def text_encrypter(text: str, key: str)->str:
+def get_symbol_code(symbol: str, alphabet: str)->int:
+    """
+    This function return number of symbol in alphabet
+    :param symbol:
+    :param alphabet:
+    :return number of symbol:
+    """
+    for i in range (0, len(alphabet)):
+        if symbol==alphabet[i]:
+            return (i)
+    raise ValueError("symbol is not from that alphabet")
+
+def text_encrypter(text: str, key: str, alphabet: str, delimiters: list)->str:
     """
         This function creates ciphertext using a modified Caesar cipher.
         :arguments: original text, key
         :return: ciphertext
     """
     changed_text = ""
-    for i in range(0, len(text)):
-        if (delimiter_check(text[i])):
-            changed_text += chr((ord(text[i]) + ord(key[i % len(key)])) % 32 + 1040)
+    for i in range(len(text)):
+        if (delimiter_check(text[i], delimiters)):
+            changed_text += alphabet[(get_symbol_code(text[i],alphabet)+get_symbol_code(key[i%len(key)],alphabet))%len(alphabet)]
         else:
             changed_text += text[i]
     return(changed_text)
@@ -76,7 +88,7 @@ def main():
     key = file_reader(args.keyword)
     text=file_reader(args.input)
     print(text)
-    changed_text=text_encrypter(text,key)
+    changed_text=text_encrypter(text,key,ALPHABET,DELIMITERS)
     print(changed_text)
     file_writer(args.output, changed_text)
 
