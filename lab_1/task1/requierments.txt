@@ -1,0 +1,2 @@
+task1: python encrypt.py --keyword keyword.txt --input original_text.txt --output changed_text2.txt
+task2: python decrypt.py --input_file cod16.txt --keyword " оиeлтчгсаувябкыдпрцфьзэжхющйшемн" --str_to_change "MJn-3GBOtPIdF9AULQ=VYKCRhS8Zx>E!$" -output decrypted_text.txt
