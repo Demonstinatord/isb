@@ -1,0 +1,4 @@
+Bad generator is not reliable
+C generator is reliable
+Java generator is reliable
+Python generator is reliable
