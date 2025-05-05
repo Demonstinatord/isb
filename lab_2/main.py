@@ -125,9 +125,7 @@ def main():
         ct = consecutive_test(text)
         lt = longest_sequence_test(text)
         print(f"{ft}\n{ct}\n{lt}\n")
-        if (ft>=P
-                and ct >=P
-                and lt)>=P:
+        if (ft>=P and ct >=P and lt>=P):
             print(f"\n{GENERATOR_NAMES[i]} generator is reliable\n")
             output_text+=(f"{GENERATOR_NAMES[i]} generator is "
                           f"reliable\nP1:{ft}\nP2:{ct}\nP3:{lt}\n")
