@@ -70,7 +70,7 @@ def consecutive_test(text: str)->float:
         return 0.0
     count=0
     for i in range(0, len(text)-1):
-        if text[i]==text[i+1]:
+        if text[i]!=text[i+1]:
             count+=1
 
     numerator = abs(count-2*n*su*(1-su))
@@ -99,13 +99,13 @@ def longest_sequence_test(text: str)->float:
                 if count>max_count:
                     max_count=count
             else: count=0
-        if count<=1:
+        if max_count<=1:
             v[0]+=1
-        if count==2:
+        if max_count==2:
             v[1]+=1
-        if count==3:
+        if max_count==3:
             v[2]+=1
-        if count>=4:
+        if max_count>=4:
             v[3]+=1
 
     hi_sq = 0
