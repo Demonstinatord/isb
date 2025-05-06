@@ -110,7 +110,7 @@ def longest_sequence_test(text: str)->float:
 
     hi_sq = 0
     for i in range(0,4):
-        hi_sq+=math.pow((v[i] - 16 * PI_CONST[i]),2) / 16 * PI_CONST[i]
+        hi_sq+=math.pow((v[i] - 16 * PI_CONST[i]),2) / (16 * PI_CONST[i])
     p_value=mpmath.gammainc(1.5, hi_sq / 2)
 
     return p_value
